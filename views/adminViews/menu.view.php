@@ -20,7 +20,7 @@
         <a class="list-item-link_admin fw-bold" href="/admin/product">Hàng hóa</a>
     </li>
     <li class="list-item-menu px-4 py-2">
-        <a class="list-item-link_admin fw-bold" href="/admin/list-users">Khách hàng</a>
+        <a class="list-item-link_admin fw-bold" href="/admin/list-users">Người dùng</a>
     </li>
     <li class="list-item-menu px-4 py-2">
         <a class="list-item-link_admin fw-bold" href="/admin/comments">Bình luận</a>

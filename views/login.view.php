@@ -1,5 +1,5 @@
 <?php
-    require 'views/layouts/part/headerOnly.php';
+    // require 'views/layouts/part/headerOnly.php';
 ?>
 <div class="main-form">
     <form action="" method="POST" class="form" id="form-2">

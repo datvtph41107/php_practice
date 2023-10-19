@@ -1,5 +1,5 @@
 <?php
-require 'views/layouts/part/headerOnly.php';
+// require 'views/layouts/part/headerOnly.php';
 ?>
 
 <div class="main-form">

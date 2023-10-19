@@ -241,13 +241,52 @@
                     </swiper-slide>
                 </swiper-container>
             </div>
-            <!-- Products -->
+            <!-- Top Products  -->
             <div class="product_homepage" style="padding: 0 32px; margin-top: 32px;">
                 <div class="product-heading d-flex justify-content-between">
                     <h2 class="fs-3 fw-bold mb-4">Top 10 sản phẩm</h2>
                     <a href="">See All</a>
                 </div>
-                <?php require_once 'layouts/part/product.php'; ?>
+                <?php
+                require_once('layouts/part/product.php');
+                ?>
+
+                <!-- Navbar -->
+                <h2 class="fs-3 fw-bold mb-4">Sản phẩm</h2>
+                <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                            <button class="nav-link active selected-page" value="20">Tất cả sản phẩm</button>
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <?php
+                                $query = "SELECT * FROM danh_muc";
+                                $fetch = pdo_query($query);
+
+                                foreach ($fetch as $key => $value) {
+                                ?>
+                                    <li class="nav-item px-2">
+                                        <button class="nav-link active selected-page" value="<?= $value['id'] ?>" ?=><?= $value['name'] ?></button>
+                                    </li>
+                                <?php
+                                }
+                                ?>
+                            </ul>
+                            <!-- <form class="d-flex" role="search"> -->
+                            <input class="form-control me-2 search_product border border " style="width: 25%; font-size: 16px;" type="search" placeholder="Tìm kiếm nhanh chóng" aria-label="Search">
+                            <button class="btn btn-outline-primary" type="submit">Tìm kiếm</button>
+                            <!-- </form> -->
+                        </div>
+                    </div>
+                </nav>
+                <!-- All Products -->
+                <?php
+                require_once('./views/layouts/part/productOnly.php');
+                require_once('./views/layouts/part/footer.php');
+                ?>
             </div>
+
         </div>
 </main>

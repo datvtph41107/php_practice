@@ -106,10 +106,6 @@
         z-index: 150;
     }
 </style>
-<?php
-// require 'views/auth/authMiddleware.php';
-?>
-
 <header class="bg-transparent d-flex" style="height: 72px; width: 100%; padding: 0 32px;">
     <div class="d-flex align-items-center justify-content-between" style="width: 100%;">
         <div class="d-flex" href="#" style="  height: 100%; ">
@@ -119,7 +115,6 @@
                 </div>
                 <span class="logo-title">OpenShop</span>
             </a>
-
             <div class="logo-div">
                 <ul class="list-contain mb-0 h-100">
                     <li class="list-item">
@@ -131,32 +126,39 @@
                 </ul>
             </div>
         </div>
-
         <div class="middle">
             <?php require 'search.php' ?>
         </div>
-
         <div class="right">
             <div class="d-flex">
                 <?php
                 if (isset($_SESSION['user'])) {
+                    if (isset($_SESSION['unique_id'])) {
+                        $id_user = $_SESSION['unique_id'];
+                        $fetchApi = "SELECT * FROM tai_khoan WHERE id = :id_user";
+                        $data = [
+                            ':id_user' => $id_user,
+                        ];
+
+                        $result = pdo_query_one($fetchApi, $data);
+                    }
                 ?>
                     <div class="dropdown" style="height: 48px;">
                         <button style="height:100%;" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img style="height: 100%; border-radius: 30px;" src="/views/layouts/image/author.jpg" alt="img">
+                            <img style="height: 100%; border-radius: 30px;" src="<?= $result['img'] != '' ? '../../../' . $result['img'] : 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a' ?> " alt="img">
                             <?php echo '<span style="margin-left: 6px;" >' . $_SESSION['user'] . '</span>'; ?>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
                             <?php
                             if (isAdmin($_SESSION['user'])) {
-                                ?>
-                                    <li><a class="dropdown-item" href="/admin">Quản trị website</a></li>
-                                <?php
+                            ?>
+                                <li><a class="dropdown-item" href="/admin">Quản trị website</a></li>
+                            <?php
                             } else {
-                                ?>
-                                    <li><a class="dropdown-item" href="#">Đăng ký quản trị viên</a></li>
-                                <?php
+                            ?>
+                                <li><a class="dropdown-item" href="#"></a></li>
+                            <?php
                             }
                             ?>
                             <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>

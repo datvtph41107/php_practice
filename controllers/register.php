@@ -16,7 +16,6 @@ if (isset($_POST['form-register'])) {
     // $address = $_POST['address'];
     // $phone = $_POST['phone'];
     // $role = 1;
-
     $userNameError = validateName($username);
     $emailError = validateEmail($email);
     $passwordError = validatePassword($password);
@@ -28,26 +27,20 @@ if (isset($_POST['form-register'])) {
             ':username' => $username,
             ':email' => $email,
         ];
-
         $result = pdo_query_user($query, $data);
 
         if ($result->rowCount() > 0) {
             echo getMessageError('Tài khoản đã tồn tại. Vui lòng tạo tài khoản khác');
         } else {
             $query = "INSERT INTO tai_khoan (username, password, email) VALUES (:username, :password, :email)";
-
             $data = [
                 ':username' => $username,
                 ':password' => $password,
                 ':email' => $email,
             ];
-
             $excuted = pdo_execute($query, $data);
-
             echo getMessageSucceed('Đăng ký thành công. đăng nhập ngay !!');
         }
-
-        
     }
 }
 

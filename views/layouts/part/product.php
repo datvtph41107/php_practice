@@ -1,7 +1,5 @@
 <style>
     .product-wrapper {
-        width: 25%;
-        height: 100%;
         padding-left: 8px;
         padding-right: 8px;
     }
@@ -16,12 +14,12 @@
     .product-img {
         display: flex;
         position: relative;
-        width: 100%;
         height: 235px;
         justify-content: center;
     }
 
     .product-description {
+        height: 140px;
         padding: 22px 18px;
         color: black;
     }
@@ -44,6 +42,7 @@
 
     .product-img img {
         height: 100%;
+        width: 60%;
         border-radius: 12px;
         object-fit: cover;
         border-bottom-left-radius: 0;
@@ -59,43 +58,59 @@
     a {
         color: white;
     }
+
+    swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 
-
-
 <div class="product-container">
-    <?php
-    $query = "SELECT * FROM san_pham";
+    <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30" slides-per-view="4">
+        <?php
+        $query = "SELECT * FROM san_pham ORDER BY luotxem DESC LIMIT 10 ";
 
-    $fetchProduct = pdo_query($query);
+        $fetchProduct = pdo_query($query);
 
-    foreach ($fetchProduct as $key => $product) {
-    ?>
-        <a href="/product" class="product-wrapper">
-            <div class="box-product">
-                <div class="product-item">
-                    <div class="product-description">
-                        <span class="text-danger fs-6 mb-6"><?= $product['sp_notice'] ?></span>
-                        <h3 style="font-size: 28px; font-weight: bold; width: 252px;"><?= $product['name'] ?></h3>
-                    </div>
-                    <div class="product-img">
-                        <img src="<?= '../../../' . $product['img'] ?>" alt="">
-                    </div>
-                    <div class="product-description">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5>Bản giới hạn</h5>
-                                <span><?= $product['price'] . '$' ?></span>
+        foreach ($fetchProduct as $key => $product) {
+        ?>
+            <swiper-slide>
+                <a href="/product?id=<?= $product['id'] ?>" class="product-wrapper">
+                    <div class="box-product">
+                        <div class="product-item">
+                            <div class="product-description">
+                                <span class="text-danger fs-6 mb-6"><?= $product['sp_notice'] ?></span>
+                                <h3 style="font-size: 28px; font-weight: bold; width: 252px;"><?= $product['name'] ?></h3>
                             </div>
-                            <button class=" text-white rounded-4 fw-bold h-100" style="font-size: 14px; padding: 8px 18px; border: none; background-color: #2081E2;">
-                                Mua ngay
-                            </button>
+                            <div class="product-img">
+                                <img src="<?= '../../../' . $product['img'] ?>" alt="">
+                            </div>
+                            <div class="product-description">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5>Bản giới hạn</h5>
+                                        <span><?= $product['price'] . ' $' ?></span>
+                                    </div>
+                                    <button class=" text-white rounded-4 fw-bold h-100" style="font-size: 14px; padding: 8px 18px; border: none; background-color: #2081E2;">
+                                        Mua ngay
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </a>
-    <?php
-    }
-    ?>
+                </a>
+            </swiper-slide>
+        <?php
+        }
+        ?>
+    </swiper-container>
 </div>

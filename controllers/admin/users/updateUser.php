@@ -23,19 +23,16 @@ if (isset($id)) {
         $role = $_POST['role'];
 
         if (empty($username) == false && empty($email) == false && empty($password) == false && empty($address) == false && empty($phone) == false) {
-            $query = "SELECT * FROM tai_khoan WHERE username = :username OR email = :email";
+            $query = "SELECT * FROM tai_khoan WHERE (username = :username OR email = :email)  AND id != :_id";
             $data = [
                 ':username' => $username,
                 ':email' => $email,
+                ':_id' => $id,
             ];
 
             $result = pdo_query_user($query, $data);
-            $temp = $result->fetch();
 
-            echo '<pre>';
-            var_dump($temp);
-            echo '</pre>';
-            if () {
+            if ($result->rowCount() > 0) {
                 echo getMessageError('User đã tồn tại');
             } else {
                 $query = "UPDATE tai_khoan SET username=:username, password=:password, email=:email, address=:address, phone=:phone, role=:role WHERE id = :_id";

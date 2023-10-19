@@ -1,21 +1,34 @@
-<h1>Thống kê</h1>
+<?php
+$querySelect = "SELECT * FROM binh_luan l JOIN tai_khoan k ON l.id_user = k.id";
+
+$fetchApi = pdo_query($querySelect);
+
+?>
+
+<h1 class="mb-4">Listcomment</h1>
+
 <div class="product-container">
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">Chọn</th>
-                <th scope="col">Mã danh mục</th>
-                <th scope="col">Tên danh mục</th>
-                <th scope="col">Số lượng</th>
-                <th scope="col">Gía cao nhất</th>
-                <th scope="col">Gía thấp nhất</th>
-                <th scope="col">Gía trung bình</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nội dung</th>
+                <th scope="col">Người dùng</th>
+                <th scope="col">ID profuct</th>
+                <th scope="col">Ngày bình luận</th>
+                <th scope="col">Xử lý</th>
             </tr>
         </thead>
         <tbody>
             <?php
             foreach ($fetchApi as $key => $value) {
-
+                // echo '<pre>';
+                // var_dump($value[0]);
+                // echo '</pre>';
+                // echo '<pre>';
+                // var_dump($value);
+                // echo '</pre>';
             ?>
                 <tr>
                     <th scope="row">
@@ -25,21 +38,18 @@
                         <?= $value[0] ?>
                     </td>
                     <td>
-                        <?= $value[1] ?>
+                        <?= $value['noidung'] ?>
                     </td>
                     <td>
-                        <?= $value['soluongdm'] ?>
+                        <?= $value['email'] ?>
                     </td>
                     <td>
-                        <?= $value['giamax'] ?>
+                        <?= $value['idsanpham'] ?>
                     </td>
                     <td>
-                        <?= $value['giamin'] ?>
+                        <?= $value['created_at'] ?>
                     </td>
-                    <td>
-                        <?= $value['giatb'] ?>
-                    </td>
-
+                    
                     <td class="d-flex">
                         <!-- Mang cua value -->
                         <a class="text-white" href="/admin/update-comments?id=<?= $value[0] ?>">
@@ -71,34 +81,3 @@
         </a>
     </div>
 </div>
-<div id="vis_div" style="width: 600px; height: 400px;"></div>
-<script src="https://www.gstatic.com/charts/loader.js"></script>
-<script>
-    google.charts.load('current', {
-        'packages': ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-
-        // Set Data
-        const data = google.visualization.arrayToDataTable([
-            ['Danh mục', 'Số lượng sản phẩm'],
-            <?php
-            foreach ($fetchApi as $key => $unit) {
-                echo '["' . $unit['tendm'] . '", ' . $unit['soluongdm'] . '],';
-            }
-            ?>
-        ]);
-
-        // Set Options
-        const options = {
-            title: 'Thống kê số lượng sản phẩm'
-        };
-
-        // Draw
-        const chart = new google.visualization.PieChart(document.getElementById('vis_div'));
-        chart.draw(data, options);
-
-    }
-</script>

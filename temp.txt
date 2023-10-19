@@ -1,0 +1,83 @@
+const searchProduct = document.querySelector('.search_product');
+// Uncaught TypeError: updateDebounce is not a function
+searchProduct.addEventListener('input', e => {
+    let searchXhr = new XMLHttpRequest();
+    searchXhr.open("POST", "./views/layouts/part/productOnly.php", true);
+    searchXhr.onload = () => {
+        if (searchXhr.readyState === XMLHttpRequest.DONE) {
+            if (searchXhr.status === 200) {
+                // let data = searchXhr.response;
+                // containerProduct.innerHTML = data;
+            }
+        }
+    }
+    searchXhr.onerror = function() {
+        console.error("Request failed");
+    };
+    searchXhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    const updateDebounce = debounced(text => {
+        searchXhr.send("debounceValue="+text);
+    }, 1000);
+
+    updateDebounce(e.target.value);
+
+    function debounced(cb, delay) {
+    console.log(1233);
+    let timeout;
+    // tra ve mot function
+    // ...args chua gtri truyen trong tham so updateDebounce
+    return (...args) =>{
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            // cb= text => {console.log(text);}); => text la tham so chua args
+            cb(...args);
+        }, delay)
+    }
+};
+});
+
+
+!============== DEBOUNCE =========!
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input class="inputText" type="text" placeholder="type here...">
+    Debounce: <div class="debounce"></div>
+</body>
+<script>
+    const input = document.querySelector('.inputText')
+    const debounceText = document.querySelector('.debounce')
+
+    // updateDebounceText = gtri tra ve cua mot hàm 
+    // gtri của debounce là một hàm
+    const updateDebounceText = debounce(text => {
+       console.log(text);
+    }, 1000);
+
+    input.addEventListener('input', e => {
+        // console.log(e.target.value);
+        updateDebounceText(e.target.value)
+    })
+
+    // debounce sẽ được gắn vào updateDebounceText
+    function debounce(cb, delay) {
+        console.log(cb);
+        let timeout;
+        // ftc debounce trả về một hàm khi gọi sẽ thực thi hàm này và
+        // trả về đối số trong cb vd: input = 'hello' => args = 'hello'
+        return (...args) => {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                // cb ('text trong input') truyen lai len tren
+                cb(...args)
+            }, delay)
+        }
+    }
+</script>
+</html>

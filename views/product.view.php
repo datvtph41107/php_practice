@@ -2,7 +2,7 @@
     .product {
         padding-top: 40px;
         margin: 0 auto;
-        width: 958px;
+        width: 1200px;
     }
 
     .grid {
@@ -176,14 +176,39 @@
     }
 </style>
 
+<?php
+$id = $_GET['id'];
+if ($id) {
+    $query = "SELECT * FROM san_pham WHERE id = :_id";
+    $data = [
+        ':_id' => $id,
+    ];
+    $result = pdo_query_user($query, $data);
+
+    if ($result->rowCount() > 0) {
+        $productDetail = $result->fetchAll();
+
+        foreach ($productDetail as $key => $product) {
+            extract($product);
+        }
+    }
+}
+
+$query = "SELECT sum(luotxem) as totalView FROM san_pham";
+$result = pdo_query($query);
+$allView = (int)$result[0]['totalView'];
+$per = ($luotxem / $allView) * 100;
+$formatPer = number_format($per, 2);
+?>
+
 <div class="product">
     <div class="grid">
         <div class="product_left">
-            <img class="product_left-img" src="views/layouts/image/slide2.png" alt="">
+            <img class="product_left-img" src="<?= $img ?>" alt="">
         </div>
-        <div class="product_right">
+        <div class="product_right overflow-hidden">
             <div class="product_right-title">
-                <span>iPhone 15 Pro Max & iPhone 15 Plus</span>
+                <span><?= $name ?></span>
             </div>
             <div class="product_right-review">
                 <div class="review">Chưa có đánh giá</div>
@@ -196,7 +221,7 @@
             <div class="product_price-main">
                 <div class="product_price">
                     <div class="product_price-display">
-                        999.$
+                        <?= $price ?>.00$
                     </div>
                 </div>
             </div>
@@ -224,5 +249,29 @@
             </div>
         </div>
     </div>
+    <div class="col-md-6 mt-4 w-50">
+        <div class="card mb-4 mb-md-0">
+            <div class="card-body">
+                <p class="mb-4"><span class="text-primary font-italic me-1">Đánh giá</span> sản phẩm
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Lượt xem</p>
+                <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: <?= $formatPer.'%' ?>" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Tương tác</p>
+                <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- COMMENT RENDER -->
+    <?php
+    require_once('./views/layouts/part/comment.php');
+    require_once('./views/layouts/part/product.php');
+    ?>
+</div>
+</div>
 </div>
 </div>

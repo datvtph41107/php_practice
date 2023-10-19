@@ -18,50 +18,46 @@
         <div class="app" style="width: 100%;">
             <?php
             session_start();
-            require './config.php';
-            require './views/auth/authMiddleware.php';
-
             $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 
-            if ($uri === '/') {
-                require 'views/layouts/part/header.php';
-            }
-            
+            require './config.php';
+            require_once('./views/auth/authMiddleware.php');
+            // Việc sử dụng ob_start() để bắt đầu bộ đệm đầu ra (output buffering) có thể giúp bạn tránh được lỗi "Cannot modify header information". Khi bạn gọi ob_start(), tất cả đầu ra sẽ được đặt vào bộ đệm, cho phép bạn thay đổi tiêu đề HTTP sau khi bắt đầu xuất ra nội dung.
+            ob_start();
+            // đầu ra 28 sẽ được lưu vào bộ nhớ đệm ob_start()
+            require_once('views/layouts/part/header.php');
+            // Lưu bộ đệm và lấy ra
+            $headerContent = ob_get_contents();
+            // var_dump($headerContent);
+            // Dừng bộ đệm
+            // ob_end_clean();
             $routes = [
                 '/' => 'controllers/home.php',
                 '/about' => 'controllers/about.php',
                 '/contact' => 'controllers/contact.php',
                 '/product' => 'controllers/product.php',
+                '/profile' => 'controllers/profile.php',
+                '/edit-profile' => 'controllers/editProfile.php',
                 '/login' => 'controllers/login.php',
                 '/register' => 'controllers/register.php',
                 '/logout' => 'controllers/logout.php',
                 '/admin' => 'controllers/admin/index.php',
             ];
-
-            if (isset($_SESSION['user']) && $uri === '/login') {
-                echo '123';
-                header('Location: /');
-            }
-
+            // if ($_SESSION['user'] ?? null &&  $uri === '/login') {
+            //     header('location: /');
+            // }
             if (array_key_exists($uri, $routes) || strpos($uri, '/admin/') === 0) {
-                if (strpos($uri, '/admin') === 0) {
-                        if (isAdmin($_SESSION['user'] ?? null)) {
-                        require 'controllers/admin/index.php';
-                        exit();
-                    }
-                }else {
+                if (strpos($uri, '/admin') === 0 && isAdmin($_SESSION['user'])) {
+                    require 'controllers/admin/index.php';
+                    exit();
+                } else {
                     if (strpos($uri, '/admin') === 0) {
-                        echo '<script language="javascript">';
-                        echo 'alert("message successfully sent")';
-                        echo '</script>';
-
                         header('Location: /');
                     }
                 }
                 require $routes[$uri];
             } else {
                 http_response_code(404);
-
                 require 'views/404.php';
 
                 die();
@@ -69,27 +65,8 @@
             ?>
         </div>
     </div>
-    <script>
-        var swiper = new Swiper(".mySwiper", {
-            slidesPerView: 4,
-            spaceBetween: 30,
-            slidesPerGroup: 4,
-            loop: true,
-            loopFillGroupWithBlank: true,
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-        });
-    </script>
+    <script src="chat.js"></script>
+
     <script>
         const scrollDemo = document.querySelector(".app");
         const output = document.querySelector("header");
@@ -120,6 +97,7 @@
             }
         }
     </script>
+
 </body>
 
 </html>

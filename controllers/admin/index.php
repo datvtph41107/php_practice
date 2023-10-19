@@ -37,7 +37,10 @@ require_once ('./views/layouts/part/header.php');
             'update-users' => 'controllers/admin/users/updateUser.php',
             'delete-users' => 'controllers/admin/users/deleteUser.php',
 
-            'comments' => 'controllers/admin/comments/comments.php',
+            'comments' => 'controllers/admin/comments/listComment.php',
+            'update-comments' => 'controllers/admin/comments/updateComment.php',
+            'delete-comments' => 'controllers/admin/comments/deleteComment.php',
+
             'statistics' => 'controllers/admin/statistics/statistics.php',
         ],
     ];

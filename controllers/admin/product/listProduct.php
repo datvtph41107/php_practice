@@ -1,5 +1,5 @@
 <?php
-$querySelect = "SELECT *  FROM san_pham n JOIN danh_muc b ON n.iddm = b.id";
+$querySelect = "SELECT * FROM san_pham n JOIN danh_muc b ON n.iddm = b.id";
 
 $fetchApi = pdo_query($querySelect);
 

@@ -3,11 +3,11 @@
     require './controllers/validate.php';
     
     if (isset($_POST['add_product'])) {
-        $product_name = $_POST['product_name'];
-        $product_price = $_POST['product_price'];
-        $product_category = $_POST['product_category'];
-        $product_notice = $_POST['product_notice'];
-        $product_description = $_POST['product_description'];
+        $product_name = trim($_POST['product_name']);
+        $product_price = trim($_POST['product_price']);
+        $product_category = trim($_POST['product_category']);
+        $product_notice = trim($_POST['product_notice']);
+        $product_description = trim($_POST['product_description']);
 
         if (empty($product_name) == false && empty($product_price) == false && empty($product_category) == false && empty($product_notice) == false && empty($product_description) == false) {
             if (isset($_FILES['product_img'])) {
